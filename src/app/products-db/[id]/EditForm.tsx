@@ -1,28 +1,29 @@
 'use client'
 
-import { addProductHandler, FormState } from "@/actions/product-action";
+import { FormState, updateProductHandler } from "@/actions/product-action";
 import { useActionState } from "react";
+import { Product } from "../page";
 
-
-export default function AddProductServer() {
+export default function EditForm({product}:{product: Product}) {
 
     const initialState: FormState = {
         errors: {}
     }
 
-    const [formState, formAction, isPending] = useActionState(addProductHandler, initialState)
+    const updateProductHandlerWithId = updateProductHandler.bind(null, product.id)
 
-    
+    const [formState, formAction, isPending] = useActionState(updateProductHandlerWithId, initialState)
 
     return (
         <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold text-gray-900 text-center mb-6">Create Product</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 text-center mb-6">Edit Product</h2>
             <form action={formAction} noValidate>
                 <div className="mb-4">
                     <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                         Title
                     </label>
                     <input
+                        defaultValue={product.title}
                         type="text"
                         id="title"
                         name="title"
@@ -36,6 +37,7 @@ export default function AddProductServer() {
                         Price
                     </label>
                     <input
+                        defaultValue={product.price}
                         type="number"
                         id="price"
                         name="price"
@@ -49,6 +51,7 @@ export default function AddProductServer() {
                         Description
                     </label>
                     <textarea
+                        defaultValue={product.description}
                         name="description"
                         id="description"
                         required
@@ -62,7 +65,7 @@ export default function AddProductServer() {
                     disabled={isPending}
                     className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
                 >
-                    Submit
+                    Update
                 </button>
             </form>
         </div>
